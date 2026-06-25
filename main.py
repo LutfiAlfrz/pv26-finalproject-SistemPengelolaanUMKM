@@ -16,7 +16,10 @@ from utils.auth    import verify_login, load_credentials
 from database.db   import init_db
 
 from gui.dashboard     import DashboardPage
+from gui.kelola_produk import KelolaProdukPage
 from gui.penjualan     import PenjualanPage
+from gui.laporan       import LaporanPenjualanPage
+from gui.pengaturan    import PengaturanPage
 
 # Info anggota kelompok
 ANGGOTA = [
@@ -309,6 +312,8 @@ class MainWindow(QMainWindow):
         self.dashboard       = DashboardPage(self.data_produk, self.data_penjualan)
         self.kelola_produk   = KelolaProdukPage(self.data_produk, self.dashboard)
         self.penjualan_page  = PenjualanPage(self.data_produk, self.data_penjualan, self.dashboard)
+        self.laporan_page    = LaporanPenjualanPage(self.data_penjualan)
+        self.pengaturan_page = PengaturanPage(self)
 
         self.dashboard.set_navigate_callback(self._handle_nav_callback)
 

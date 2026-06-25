@@ -15,6 +15,9 @@ from PySide6.QtGui   import QIcon, QPixmap, QAction
 from utils.auth    import verify_login, load_credentials
 from database.db   import init_db
 
+from gui.dashboard     import DashboardPage
+from gui.penjualan     import PenjualanPage
+
 # Info anggota kelompok
 ANGGOTA = [
     ("Lutfi Alfarizi",  "F1D02310121"),
@@ -150,6 +153,7 @@ class MainWindow(QMainWindow):
         self.data_penjualan = penjualan_get_all()
 
         self._setup_ui()
+        self.dashboard.update_user_display(logged_in_user)
 
     # ------------------------------------------------------------
     def _set_window_icon(self):
@@ -301,6 +305,17 @@ class MainWindow(QMainWindow):
 
         # STACK
         self.stack = QStackedWidget()
+
+        self.dashboard       = DashboardPage(self.data_produk, self.data_penjualan)
+        self.kelola_produk   = KelolaProdukPage(self.data_produk, self.dashboard)
+        self.penjualan_page  = PenjualanPage(self.data_produk, self.data_penjualan, self.dashboard)
+
+        self.dashboard.set_navigate_callback(self._handle_nav_callback)
+
+        for page in [self.dashboard, self.kelola_produk,
+                     self.penjualan_page, self.laporan_page,
+                     self.pengaturan_page]:
+            self.stack.addWidget(page)
 
         menus = [
             ("🏠  Dashboard",         0),
